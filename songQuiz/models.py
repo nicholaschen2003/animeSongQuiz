@@ -4,9 +4,9 @@ class Song(models.Model):
     name = models.CharField(max_length=200, default=None)
     file_path = models.CharField(max_length=200, default=None)
     difficulty = models.CharField(max_length=200, default=None)
-    points = models.IntegerFiels(default=0)
+    points = models.IntegerField(default=0)
     times_played = models.IntegerField(default=0)
-    times_correct = models.IntederField(default=0)
+    times_correct = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -14,7 +14,7 @@ class Song(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=200, default=None)
     points = models.IntegerField(default=0)
-    songs_played = models.CharField(default=None) #also holds data on times played and times correct for each song played
+    songs_played = models.CharField(max_length=1000, default=None) #also holds data on times played and times correct for each song played
 
     def __str__(self):
         return self.name
