@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from .models import Song, User
 
 def getNumUsers(request):
 
@@ -16,7 +17,13 @@ def getPlayerData(request):
 
 def createPlayers(request):
 
-    for i in range(len(request.POST)-1):
-        print(request.POST[str(i+1)])
+    playerList = []
+    for i in range(1, len(request.POST)):
+        if request.POST[str(i)] not in User.objects.values_list('name', flat=True):
+            newUser = User(name=request.POST[str(i)])
+            newUser.save()
+            playerList.append(newUser)
+        else:
+            playerList.append(User.objects.get(name=request.POST[str(i)]))
 
     return HttpResponse("placeholder.")
