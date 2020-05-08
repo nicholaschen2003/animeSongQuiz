@@ -14,7 +14,7 @@ class Song(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=200, default=None)
     points = models.IntegerField(default=0)
-    songs_played = models.CharField(max_length=1000, default=None) #also holds data on times played and times correct for each song played
+    songs_played = models.CharField(max_length=1000, default='') #also holds data on times played and times correct for each song played
 
     def __str__(self):
         return self.name
