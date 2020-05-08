@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+<body>
+
+  <form action="{% url 'songQuiz:getPlayerData' %}" method="post">
+    {% csrf_token %}
+    <label for="numUsers">How many players are there?</label>
+    <input type="text" id="numUsers" name="numUsers">
+    <input type="submit" value="Next">
+  </form>
+
+</body>
+</html>

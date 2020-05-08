@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+<body>
+
+  <form action="{% url 'songQuiz:createPlayers' %}" method="post">
+    {% csrf_token %}
+    {% with ''|center:numPlayers as range %}
+    {% for _ in range %}
+      <label for="{{ forloop.counter }}">Player {{ forloop.counter }}</label>
+      <input type="text" id="{{ forloop.counter }}" name="{{ forloop.counter }}">
+      <br>
+    {% endfor %}
+    {% endwith %}
+    <input type="submit" value="Next">
+  </form>
+
+</body>
+</html>
