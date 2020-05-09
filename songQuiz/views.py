@@ -40,15 +40,15 @@ def startGame(request, playerList):
     for i in range(len(playerList)):
         for j in range(int(request.POST['numRounds'])):
             if request.POST['difficulty'] != '5':
-                potentialSongs = Song.objects.filter(difficulty=int(request.POST['difficulty']))
-                num = random.randrange(0, potentialSongs.count())
-                tempSongList.append(potentialSongs.pop(num))
+                potentialSongs = list(Song.objects.filter(difficulty=int(request.POST['difficulty'])))
+                num = random.randrange(0, len(potentialSongs))
+                songList.append(potentialSongs.pop(num))
             else:
-                potentialSongs = Song.objects.all()
-                num = random.randrange(0, potentialSongs.count())
+                potentialSongs = list(Song.objects.all())
+                num = random.randrange(0, len(potentialSongs))
                 songList.append(potentialSongs.pop(num))
 
     newGame = Game(players=str(playerList), song_list=str(songList))
     newGame.save()
-
+    
     return HttpResponse("placeholder.")
