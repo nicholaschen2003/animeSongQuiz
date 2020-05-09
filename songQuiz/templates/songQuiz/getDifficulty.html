@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+<body>
+
+  <form action="{% url 'songQuiz:startGame' playerList %}" method="post">
+    {% csrf_token %}
+    <label for="difficulty">Select a difficulty:</label>
+    <select id="difficulty" name="difficulty">
+      <option value="1">Easy</option>
+      <option value="2">Medium</option>
+      <option value="3">Hard</option>
+      <option value="4">Impossible</option>
+      <option value="5">Random</option>
+    </select>
+    <br>
+    <label for="numRounds">How many rounds should each player play?</label>
+    <input type="text" id="numRounds" name="numRounds">
+    <input type="submit" value="Next">
+  </form>
+
+</body>
+</html>

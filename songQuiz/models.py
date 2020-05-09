@@ -18,3 +18,7 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+
+class Game(models.Model):
+    players = models.CharField(max_length=1000, default=None)
+    song_list = models.CharField(max_length=1000, default=None)
