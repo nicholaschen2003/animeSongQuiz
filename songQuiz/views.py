@@ -25,30 +25,45 @@ def createPlayers(request):
             newUser.save()
             playerList.append(newUser)
         else:
-            playerList.append(User.objects.get(name=request.POST[str(i)]))
+            playerList.append(User.objects.get(name=request.POST[str(i)]).pk)
 
-    context = {
-        'playerList' : str(playerList),
-    }
+    newGame = Game(players=playerList)
+    newGame.save()
 
-    return render(request, 'songQuiz/getDifficulty.html', context)
+    return render(request, 'songQuiz/getDifficulty.html')
 
-def startGame(request, playerList):
+def startGame(request):
 
-    playerList = playerList.strip('][').split(', ')
+    game = Game.objects.order_by('-pk')[0]
+    playerListPK = game.players.strip("'[]").split(", ")
+    playerList = []
+    for i in range(len(playerListPK)):
+        playerListPK[i] = int(playerListPK[i])
+        player = User.objects.get(pk=playerListPK[i])
+        playerList.append(player)
     songList = []
+    songListPK = []
     for i in range(len(playerList)):
         for j in range(int(request.POST['numRounds'])):
             if request.POST['difficulty'] != '5':
                 potentialSongs = list(Song.objects.filter(difficulty=int(request.POST['difficulty'])))
                 num = random.randrange(0, len(potentialSongs))
-                songList.append(potentialSongs.pop(num))
+                song = potentialSongs.pop(num)
+                songList.append(song)
+                songListPK.append(song.pk)
             else:
                 potentialSongs = list(Song.objects.all())
                 num = random.randrange(0, len(potentialSongs))
-                songList.append(potentialSongs.pop(num))
+                song = potentialSongs.pop(num)
+                songList.append(song)
+                songListPK.append(song.pk)
 
-    newGame = Game(players=str(playerList), song_list=str(songList))
-    newGame.save()
-    
-    return HttpResponse("placeholder.")
+    game.song_list=songListPK
+    game.save()
+
+    context = {
+        'songList' : songList,
+        'playerList' : playerList,
+    }
+
+    return render(request, 'songQuiz/game.html', context)

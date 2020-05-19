@@ -9,5 +9,5 @@ urlpatterns = [
     path('', views.getNumUsers, name='getNumUsers'),
     path('getPlayerData/', views.getPlayerData, name='getPlayerData'),
     path('createPlayers/', views.createPlayers, name='createPlayers'),
-    path('startGame/<playerList>', views.startGame, name='startGame'),
+    path('startGame/', views.startGame, name='startGame'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

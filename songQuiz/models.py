@@ -31,7 +31,7 @@ class Song(models.Model):
             except:
                 pass
             #create song object based on retrieved data
-            newSong = Song(name=anime, file_path="songQuiz/audio-final/"+filename, difficulty=int(difficulty), points=int(difficulty)*100)
+            newSong = Song(name=anime, file_path="/static/songQuiz/audio-final/"+filename, difficulty=int(difficulty), points=int(difficulty)*100)
             newSong.save()
 
 class User(models.Model):
@@ -44,7 +44,7 @@ class User(models.Model):
 
 class Game(models.Model):
     players = models.CharField(max_length=1000, default=None)
-    song_list = models.CharField(max_length=1000, default=None)
+    song_list = models.CharField(max_length=1000, default=None, null=True)
 
     def __str__(self):
         return self.players + "\n" + self.song_list

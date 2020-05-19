@@ -6,7 +6,7 @@
 </head>
 <body>
 
-  <form action="{% url 'songQuiz:startGame' playerList %}" method="post">
+  <form action="{% url 'songQuiz:startGame' %}" method="post">
     {% csrf_token %}
     <label for="difficulty">Select a difficulty:</label>
     <select id="difficulty" name="difficulty">
