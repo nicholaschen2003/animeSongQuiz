@@ -15,6 +15,7 @@
       this.sound.setAttribute("preload", "auto");
       this.sound.setAttribute("controls", "none");
       this.sound.style.display = "none";
+      this.sound.id = "song";
       document.body.appendChild(this.sound);
       this.play = function(){
         this.sound.play();
@@ -23,20 +24,30 @@
         this.sound.pause();
       }
     }
-    function test() {
-      var songs = [];
-      {% for song in songList %}
-      songs.push(new Sound('{{ song.file_path }}'));
-      {% endfor %}
-      for(var i = 0; i < songs.length; i++) {
-        songs[i].play();
+    function play(button) {
+      button.innerHTML = "Answer";
+      button.onclick = function(){
+        button.style = "display: none";
+        var formElements = document.getElementsByClassName("form");
+        for(var i=0; i<formElements.length; i++){
+          formElements[i].style = "display: inline";
+        }
+        document.getElementById("song").pause();
       }
+      var song = new Sound('{{ songList.0.file_path }}');
+      song.play();
     }
 
   </script>
 
   <canvas id="mainCanvas"></canvas>
-  <button onclick="test()">Test</button>
+  <button onclick="play(this)">Play</button>
+  <form action="{% url 'songQuiz:checkAnswer' %}" method="post" style="display: none" class="form">
+    {% csrf_token %}
+    <label for="answer" style="display: none" class="form">Answer</label>
+    <input type="text" name="answer" style="display: none" class="form"></input>
+    <input type="submit" style="display: none" class="form"></input>
+  </form>
 
 </body>
 </html>

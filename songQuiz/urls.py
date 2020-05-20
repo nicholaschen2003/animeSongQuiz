@@ -10,4 +10,5 @@ urlpatterns = [
     path('getPlayerData/', views.getPlayerData, name='getPlayerData'),
     path('createPlayers/', views.createPlayers, name='createPlayers'),
     path('startGame/', views.startGame, name='startGame'),
+    path('checkAnswer/', views.checkAnswer, name='checkAnswer'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

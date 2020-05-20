@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Song, User, Game
 import random
+from difflib import SequenceMatcher
 
 def getNumUsers(request):
 
@@ -58,8 +59,10 @@ def startGame(request):
                 songList.append(song)
                 songListPK.append(song.pk)
 
-    game.song_list=songListPK
+    game.song_list = songListPK
     game.save()
+
+    print(songListPK)
 
     context = {
         'songList' : songList,
@@ -67,3 +70,54 @@ def startGame(request):
     }
 
     return render(request, 'songQuiz/game.html', context)
+
+def checkAnswer(request):
+
+    #get some POST data containing the user answer and check against correct answer
+    #.remove the first song in game.song_list
+    #check if length of song_list == 0
+    #if true, display results page; else, render game.html
+    userAnswer = request.POST['answer']
+    game = Game.objects.order_by('-pk')[0]
+    songListPK = game.song_list.strip("[']").split(", ")
+    print(songListPK)
+    pk = songListPK.pop(0)
+    song = Song.objects.get(pk=int(pk))
+    answer = song.name
+    #checks to see how much of the user answer matched with the answer
+    correctPercent1 = 100*SequenceMatcher(None, answer.lower(), userAnswer.replace(" ","").lower()).ratio()
+    correctPercent2 = 100*SequenceMatcher(None, userAnswer.replace(" ","").lower(), answer.lower()).ratio()
+    #takes the larger percentage
+    if correctPercent1 > correctPercent2:
+        correctPercent = correctPercent1
+    else:
+        correctPercent = correctPercent2
+    #if 70% or more of user answer matches with answer
+    if correctPercent > 70:
+        #correct
+        pass
+    else:
+        #wrong
+        pass
+
+    songList = []
+    for i in range(len(songListPK)):
+        songListPK[i] = int(songListPK[i])
+        songList.append(Song.objects.get(pk=songListPK[i]))
+
+    game.song_list = songListPK
+    game.save()
+
+    if len(songList) == 0:
+        return HttpResponse("Results page placeholder.")
+    else:
+        playerList = []
+        for i in range(len(game.players.strip("[']").split(", "))):
+            playerList.append(User.objects.get(pk=int(game.players.strip("[']").split(", ")[i])))
+
+        context = {
+            'songList' : songList,
+            'playerList' : playerList,
+        }
+
+        return render(request, 'songQuiz/game.html', context)
