@@ -34,7 +34,7 @@
         }
         document.getElementById("song").pause();
       }
-      var song = new Sound('{{ songList.0.file_path }}');
+      var song = new Sound('{% static songList.0.file_path %}');
       song.play();
     }
 

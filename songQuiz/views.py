@@ -26,9 +26,14 @@ def createPlayers(request):
             newUser.save()
             playerList.append(newUser)
         else:
-            playerList.append(User.objects.get(name=request.POST[str(i)]).pk)
+            playerList.append(User.objects.get(name=request.POST[str(i)]))
 
-    newGame = Game(players=playerList)
+    playerListPK = []
+
+    for player in playerList:
+        playerListPK.append(player.pk)
+
+    newGame = Game(players=playerListPK)
     newGame.save()
 
     return render(request, 'songQuiz/getDifficulty.html')
@@ -62,8 +67,6 @@ def startGame(request):
     game.song_list = songListPK
     game.save()
 
-    print(songListPK)
-
     context = {
         'songList' : songList,
         'playerList' : playerList,
@@ -80,7 +83,6 @@ def checkAnswer(request):
     userAnswer = request.POST['answer']
     game = Game.objects.order_by('-pk')[0]
     songListPK = game.song_list.strip("[']").split(", ")
-    print(songListPK)
     pk = songListPK.pop(0)
     song = Song.objects.get(pk=int(pk))
     answer = song.name
@@ -94,11 +96,9 @@ def checkAnswer(request):
         correctPercent = correctPercent2
     #if 70% or more of user answer matches with answer
     if correctPercent > 70:
-        #correct
-        pass
+        print("correct")
     else:
-        #wrong
-        pass
+        print("wrong")
 
     songList = []
     for i in range(len(songListPK)):

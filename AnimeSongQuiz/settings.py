@@ -120,4 +120,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'songQuiz/static/songQuiz/audio-final')
+STATIC_ROOT = os.path.join(BASE_DIR, 'songQuiz/static/')

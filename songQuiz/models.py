@@ -31,7 +31,7 @@ class Song(models.Model):
             except:
                 pass
             #create song object based on retrieved data
-            newSong = Song(name=anime, file_path="/static/songQuiz/audio-final/"+filename, difficulty=int(difficulty), points=int(difficulty)*100)
+            newSong = Song(name=anime, file_path="songQuiz/audio-final/"+filename, difficulty=int(difficulty), points=int(difficulty)*100)
             newSong.save()
 
 class User(models.Model):
