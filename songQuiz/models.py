@@ -37,14 +37,16 @@ class Song(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=200, default=None)
     points = models.IntegerField(default=0)
-    songs_played = models.CharField(max_length=1000, default='') #also holds data on times played and times correct for each song played
+    songs_played = models.TextField(default='{}') #also holds data on times played and times correct for each song played
 
     def __str__(self):
         return self.name
 
 class Game(models.Model):
-    players = models.CharField(max_length=1000, default=None)
-    song_list = models.CharField(max_length=1000, default=None, null=True)
+    num_songs_per_player = models.IntegerField(default=0)
+    num_songs = models.IntegerField(default=0)
+    players = models.TextField(default=None)
+    song_list = models.TextField(default=None, null=True)
 
     def __str__(self):
         return self.players + "\n" + self.song_list
