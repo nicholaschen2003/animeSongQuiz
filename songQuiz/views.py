@@ -24,15 +24,14 @@ def createPlayers(request):
     for i in range(1, len(request.POST)):
         if request.POST[str(i)] not in User.objects.values_list('name', flat=True):
             newUser = User(name=request.POST[str(i)])
+            songsPlayed = {}
+            for song in Song.objects.all():
+                songsPlayed[song.name] = [0,0] #format is: {song_name : [times_played, times_correct]}
+            newUser.songs_played = json.dumps(songsPlayed)
             newUser.save()
             playerList.append(newUser)
         else:
             User.objects.get(name=request.POST[str(i)]).points = 0
-            songs_played = {}
-            for song in Song.objects.all():
-                songs_played[song.name] = [0,0] #format is: {song_name : [times_played, times_correct]}
-            User.objects.get(name=request.POST[str(i)]).songs_played = json.dumps(songs_played)
-            User.objects.get(name=request.POST[str(i)]).save()
             playerList.append(User.objects.get(name=request.POST[str(i)]))
 
     playerListPK = []
@@ -119,7 +118,7 @@ def checkAnswer(request):
         print("correct")
         player.points += song.points
         song.times_played += 1
-        song.times.correct += 1
+        song.times_correct += 1
         tempDict = json.loads(player.songs_played)
         tempDict[song.name] = [tempDict[song.name][0]+1, tempDict[song.name][1]+1]
         player.songs_played = json.dumps(tempDict)
