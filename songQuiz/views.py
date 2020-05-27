@@ -151,10 +151,10 @@ def continueGame(request):
     songListPK = game.song_list.strip("'[]").split(", ")
     if songListPK == ['']:
         context = {
-            'playerList' : list(User.objects.filter(pk__in=playerListPK).order_by("points")),
+            'playerList' : list(User.objects.filter(pk__in=playerListPK).order_by("points").reverse()),
         }
         return render(request, 'songQuiz/results.html', context)
-        
+
     else:
         songList = []
         for i in range(len(songListPK)):
