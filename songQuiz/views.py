@@ -167,3 +167,13 @@ def continueGame(request):
         }
 
         return render(request, 'songQuiz/game.html', context)
+
+def clearPoints(request):
+    game = Game.objects.order_by('-pk')[0]
+    playerListPK = game.players.strip("'[]").split(", ")
+    for playerPK in playerListPK:
+        player = User.objects.get(pk=int(playerPK))
+        player.points = 0
+        player.save()
+
+    return HttpResponseRedirect(reverse('songQuiz:getNumUsers'))

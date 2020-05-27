@@ -9,6 +9,10 @@
   {% for player in playerList %}
   <p>{{ forloop.counter }}. {{ player.name }}: {{ player.points }}</p>
   {% endfor %}
+  <form action="{% url 'songQuiz:clearPoints' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Continue"></input>
+  </form>
 
 </body>
 </html>
