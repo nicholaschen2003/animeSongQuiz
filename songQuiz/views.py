@@ -56,19 +56,16 @@ def startGame(request):
     songList = []
     songListPK = []
     for i in range(len(playerList)):
+        if request.POST['difficulty'] != '5':
+            potentialSongs = list(Song.objects.filter(difficulty=int(request.POST['difficulty'])))
+        else:
+            potentialSongs = list(Song.objects.all())
         for j in range(int(request.POST['numRounds'])):
-            if request.POST['difficulty'] != '5':
-                potentialSongs = list(Song.objects.filter(difficulty=int(request.POST['difficulty'])))
-                num = random.randrange(0, len(potentialSongs))
-                song = potentialSongs.pop(num)
-                songList.append(song)
-                songListPK.append(song.pk)
-            else:
-                potentialSongs = list(Song.objects.all())
-                num = random.randrange(0, len(potentialSongs))
-                song = potentialSongs.pop(num)
-                songList.append(song)
-                songListPK.append(song.pk)
+            print(len(potentialSongs))
+            num = random.randrange(0, len(potentialSongs))
+            song = potentialSongs.pop(num)
+            songList.append(song)
+            songListPK.append(song.pk)
 
     game.num_songs = len(songList)
     game.num_songs_per_player = len(songList)/len(playerList)
