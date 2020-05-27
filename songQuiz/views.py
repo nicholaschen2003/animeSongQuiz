@@ -61,7 +61,6 @@ def startGame(request):
         else:
             potentialSongs = list(Song.objects.all())
         for j in range(int(request.POST['numRounds'])):
-            print(len(potentialSongs))
             num = random.randrange(0, len(potentialSongs))
             song = potentialSongs.pop(num)
             songList.append(song)
@@ -92,7 +91,7 @@ def checkAnswer(request):
     playerList = []
     for i in range(len(game.players.strip("[']").split(", "))):
         playerList.append(User.objects.get(pk=int(game.players.strip("[']").split(", ")[i])))
-    player = playerList[game.num_songs % game.num_songs_per_player - 1]
+    player = playerList[(game.num_songs_per_player - (game.num_songs % game.num_songs_per_player)) % game.num_songs_per_player]
 
     songList = []
     for i in range(len(songListPK)):
@@ -100,6 +99,7 @@ def checkAnswer(request):
         songList.append(Song.objects.get(pk=songListPK[i]))
 
     game.song_list = songListPK
+    game.num_songs = len(songList)
     game.save()
 
     #checks to see how much of the user answer matched with the answer
@@ -112,7 +112,6 @@ def checkAnswer(request):
         correctPercent = correctPercent2
     #if 70% or more of user answer matches with answer
     if correctPercent > 70:
-        print("correct")
         player.points += song.points
         song.times_played += 1
         song.times_correct += 1
@@ -121,19 +120,47 @@ def checkAnswer(request):
         player.songs_played = json.dumps(tempDict)
         player.save()
         song.save()
+        context = {
+            'guess' : userAnswer,
+            'points' : player.points,
+        }
+        return render(request, 'songQuiz/correct.html', context)
+
     else:
-        print("wrong")
         song.times_played += 1
         tempDict = json.loads(player.songs_played)
         tempDict[song.name] = [tempDict[song.name][0]+1, tempDict[song.name][1]]
         player.songs_played = json.dumps(tempDict)
         player.save()
         song.save()
+        context = {
+            'answer' : answer,
+            'points' : player.points,
+        }
+        return render(request, 'songQuiz/wrong.html', context)
 
-    #the following code may need to be moved so that there can be a screen in between that displays correct/wrong
-    if len(songList) == 0:
-        return HttpResponse("Results page placeholder.")
+def continueGame(request):
+
+    game = Game.objects.order_by('-pk')[0]
+    playerListPK = game.players.strip("'[]").split(", ")
+    playerList = []
+    for i in range(len(playerListPK)):
+        playerListPK[i] = int(playerListPK[i])
+        player = User.objects.get(pk=playerListPK[i])
+        playerList.append(player)
+    songListPK = game.song_list.strip("'[]").split(", ")
+    if songListPK == ['']:
+        context = {
+            'playerList' : list(User.objects.filter(pk__in=playerListPK).order_by("points")),
+        }
+        return render(request, 'songQuiz/results.html', context)
+        
     else:
+        songList = []
+        for i in range(len(songListPK)):
+            songListPK[i] = int(songListPK[i])
+            song = Song.objects.get(pk=songListPK[i])
+            songList.append(song)
         context = {
             'songList' : songList,
             'playerList' : playerList,

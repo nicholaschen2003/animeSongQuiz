@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Results</title>
+</head>
+<body>
+
+  {% for player in playerList %}
+  <p>{{ forloop.counter }}. {{ player.name }}: {{ player.points }}</p>
+  {% endfor %}
+
+</body>
+</html>
