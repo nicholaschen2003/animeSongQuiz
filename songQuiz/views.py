@@ -6,6 +6,25 @@ import random
 from difflib import SequenceMatcher
 import json
 
+def home(request):
+
+    songs = list(Song.objects.order_by("percent_correct").reverse()[:4])
+    print(songs)
+    for i in range(len(songs)):
+        songs[i] = "%s: %3.2f%%" % (songs[i].name, songs[i].percent_correct)
+
+    print(songs)
+
+    context = {
+        'songs': songs,
+    }
+
+    return render(request, 'songQuiz/home.html', context)
+
+def help(request):
+
+    return render(request, 'songQuiz/help.html')
+
 def getNumUsers(request):
 
     return render(request, 'songQuiz/getNumUsers.html')
@@ -13,12 +32,13 @@ def getNumUsers(request):
 def getPlayerData(request):
 
     context = {
-        'numPlayers': request.POST['numUsers']
+        'numPlayers': request.POST['numUsers'],
+        'numRounds': request.POST['numRounds']
     }
 
     return render(request, 'songQuiz/getPlayerData.html', context)
 
-def createPlayers(request):
+def createPlayers(request, numRounds):
 
     playerList = []
     for i in range(1, len(request.POST)):
@@ -42,9 +62,13 @@ def createPlayers(request):
     newGame = Game(players=playerListPK)
     newGame.save()
 
-    return render(request, 'songQuiz/getDifficulty.html')
+    context = {
+        'numRounds': numRounds
+    }
 
-def startGame(request):
+    return render(request, 'songQuiz/getDifficulty.html', context)
+
+def startGame(request, difficulty, numRounds):
 
     game = Game.objects.order_by('-pk')[0]
     playerListPK = game.players.strip("'[]").split(", ")
@@ -56,11 +80,11 @@ def startGame(request):
     songList = []
     songListPK = []
     for i in range(len(playerList)):
-        if request.POST['difficulty'] != '5':
-            potentialSongs = list(Song.objects.filter(difficulty=int(request.POST['difficulty'])))
+        if difficulty != '5':
+            potentialSongs = list(Song.objects.filter(difficulty=int(difficulty)))
         else:
             potentialSongs = list(Song.objects.all())
-        for j in range(int(request.POST['numRounds'])):
+        for j in range(int(numRounds)):
             num = random.randrange(0, len(potentialSongs))
             song = potentialSongs.pop(num)
             songList.append(song)
@@ -91,7 +115,11 @@ def checkAnswer(request):
     playerList = []
     for i in range(len(game.players.strip("[']").split(", "))):
         playerList.append(User.objects.get(pk=int(game.players.strip("[']").split(", ")[i])))
-    player = playerList[(game.num_songs_per_player - (game.num_songs % game.num_songs_per_player)) % game.num_songs_per_player]
+    print(game.num_songs_per_player)
+    print(game.num_songs)
+    print(len(playerList))
+    print(((game.num_songs_per_player - (game.num_songs % game.num_songs_per_player)) -1) % len(playerList))
+    player = playerList[((game.num_songs_per_player - (game.num_songs % game.num_songs_per_player)) - 1) % len(playerList)]
 
     songList = []
     for i in range(len(songListPK)):
@@ -115,6 +143,7 @@ def checkAnswer(request):
         player.points += song.points
         song.times_played += 1
         song.times_correct += 1
+        song.percent_correct = round(float(song.times_correct) / song.times_played, 2)*100
         tempDict = json.loads(player.songs_played)
         tempDict[song.name] = [tempDict[song.name][0]+1, tempDict[song.name][1]+1]
         player.songs_played = json.dumps(tempDict)
@@ -128,6 +157,7 @@ def checkAnswer(request):
 
     else:
         song.times_played += 1
+        song.percent_correct = round(float(song.times_correct) / song.times_played, 2)*100
         tempDict = json.loads(player.songs_played)
         tempDict[song.name] = [tempDict[song.name][0]+1, tempDict[song.name][1]]
         player.songs_played = json.dumps(tempDict)
@@ -176,4 +206,4 @@ def clearPoints(request):
         player.points = 0
         player.save()
 
-    return HttpResponseRedirect(reverse('songQuiz:getNumUsers'))
+    return HttpResponseRedirect(reverse('songQuiz:home'))

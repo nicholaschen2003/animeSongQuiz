@@ -6,7 +6,7 @@
 </head>
 <body>
 
-  <form action="{% url 'songQuiz:createPlayers' %}" method="post">
+  <form action="{% url 'songQuiz:createPlayers' numRounds %}" method="post">
     {% csrf_token %}
     {% with ''|center:numPlayers as range %}
     {% for _ in range %}

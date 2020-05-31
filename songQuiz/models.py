@@ -8,6 +8,7 @@ class Song(models.Model):
     points = models.IntegerField(default=0)
     times_played = models.IntegerField(default=0)
     times_correct = models.IntegerField(default=0)
+    percent_correct = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.name
