@@ -4,15 +4,18 @@
   <meta charset="utf-8">
   <title>Wrong</title>
 </head>
-<body>
+<body style="background-color:black">
 
-  <p>The correct answer is {{ answer }}.</p>
+  {% load static %}
+  <p style="color:white">The correct answer is {{ answer }}.</p>
   <br/>
-  <p>You have {{ points }} points</p>
+  <p style="color:white">You have {{ points }} points</p>
   <form action="{% url 'songQuiz:continueGame' %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Continue"></input>
   </form>
+
+  <img src="{% static 'songQuiz/images/megumin.gif' %}" style="position:absolute; bottom:0; right:0"></img>
 
 </body>
 </html>
