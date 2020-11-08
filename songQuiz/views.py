@@ -80,7 +80,7 @@ def startGame(request, difficulty, numRounds):
     songList = []
     songListPK = []
     for i in range(len(playerList)):
-        if difficulty != '5':
+        if str(difficulty) != '5':
             potentialSongs = list(Song.objects.filter(difficulty=int(difficulty)))
         else:
             potentialSongs = list(Song.objects.all())
