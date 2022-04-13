@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Results</title>
+</head>
+<body style="background-color:black">
+
+  {% load static %}
+  <div class="container" style="margin:auto; width:100px">
+    {% for player in playerList %}
+    <p style="color:white">{{ forloop.counter }}. {{ player.name }}: {{ player.points }}</p>
+    {% endfor %}
+    <form action="{% url 'songQuiz:clearPoints' %}" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Continue"></input>
+    </form>
+  </div>
+  <img src="{% static 'songQuiz/images/resultresult.gif' %}" style="width:99%; height:auto; position: absolute; bottom:0"></img>
+
+</body>
+</html>

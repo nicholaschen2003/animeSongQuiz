@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+<body style="background-color:black">
+
+  {% load static %}
+  <table>
+    <td style="vertical-align:top; width:25%">
+      <form action="{% url 'songQuiz:getPlayerData' %}" method="post">
+        {% csrf_token %}
+        <label for="numUsers" style="color:white">How many players are there?</label>
+        <br>
+        <input type="text" id="numUsers" name="numUsers">
+        <br>
+        <br>
+        <label for="numRounds"  style="color:white">How many rounds should each player play?</label>
+        <br>
+        <input type="text" id="numRounds" name="numRounds">
+        <input type="submit" value="Next">
+      </form>
+    </td>
+    <td style="vertical-align:top">
+      <img src="{% static 'songQuiz/images/pan.gif' %}" style="max-width:90%; height:auto"></img>
+    </td>
+    <td style="vertical-align:top">
+      <img src="{% static 'songQuiz/images/nekokaguya.gif' %}" style="max-width:90%; height:auto"></img>
+    </td>
+</body>
+</html>

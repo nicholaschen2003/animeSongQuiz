@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Game</title>
+</head>
+{% load static %}
+<body style="background-image:url('{% static backgroundImagePath %}'); background-size:cover">
+
+  <script>
+    function Sound(src) {
+      this.sound = document.createElement("audio");
+      this.sound.src = src;
+      this.sound.setAttribute("preload", "auto");
+      this.sound.setAttribute("controls", "none");
+      this.sound.style.display = "none";
+      this.sound.id = "song";
+      document.body.appendChild(this.sound);
+      this.play = function(){
+        this.sound.play();
+      }
+      this.stop = function(){
+        this.sound.pause();
+      }
+    }
+    function play(button) {
+      button.innerHTML = "Answer";
+      button.onclick = function(){
+        button.style = "display: none";
+        var formElements = document.getElementsByClassName("form");
+        for(var i=0; i<formElements.length; i++){
+          formElements[i].style = "display: inline";
+        }
+        document.getElementById("song").pause();
+      }
+      var song = new Sound('{% static songList.0.file_path %}');
+      song.play();
+    }
+  </script>
+
+  <canvas id="mainCanvas"></canvas>
+  <button onclick="play(this)">Play</button>
+  <form action="{% url 'songQuiz:checkAnswer' %}" method="post" style="display: none" class="form">
+    {% csrf_token %}
+    <label for="answer" style="display: none" class="form">Answer</label>
+    <input type="text" name="answer" style="display: none" class="form"></input>
+    <input type="submit" style="display: none" class="form"></input>
+  </form>
+
+</body>
+</html>

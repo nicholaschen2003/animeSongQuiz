@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+<body style="background-color:black; text-align:center">
+
+  {% load static %}
+  <p style="color:white">Legend</p>
+  <p style="color:white">Simple=Easy, Decent=Medium, Difficult=Hard</p>
+  <p style="color:white">Comit Sudoku=Impossible, People Die When They Are Killed=Random, Red Button=Return to Home Page</p>
+  <table style="width:100%; height:100%; text-align:center; margin:auto">
+    <tr>
+      <td style="width:33%; text-align:center">
+        <a href="{% url 'songQuiz:startGame' 1 numRounds %}"><img src="{% static 'songQuiz/images/1.gif' %}" style="width:95%; height:auto; display:inline"></img></a>
+      </td>
+      <td style="width:33%; text-align:center">
+        <a href="{% url 'songQuiz:startGame' 2 numRounds %}"><img src="{% static 'songQuiz/images/2.gif' %}" style="width:95%; height:auto; display:inline"></img></a>
+      </td>
+      <td>
+        <a href="{% url 'songQuiz:startGame' 3 numRounds %}"><img src="{% static 'songQuiz/images/3.gif' %}" style="width:95%; height:auto; display:inline"></img></a>
+      </td style="width:33%; text-align:center">
+    </tr>
+    <tr>
+      <td style="width:33%; text-align:center">
+        <a href="{% url 'songQuiz:startGame' 4 numRounds %}"><img src="{% static 'songQuiz/images/4.gif' %}" style="width:95%; height:auto; display:inline"></img></a>
+      </td>
+      <td style="width:33%; text-align:center">
+        <a href="{% url 'songQuiz:startGame' 5 numRounds %}"><img src="{% static 'songQuiz/images/5.gif' %}" style="width:95%; height:auto; display:inline"></img></a>
+      </td>
+      <td style="width:33%; text-align:center">
+        <a href="{% url 'songQuiz:home' %}"><img src="{% static 'songQuiz/images/redbutton.gif' %}" style="width:95%; height:auto; display:inline"></img></a>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

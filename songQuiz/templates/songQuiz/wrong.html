@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Wrong</title>
+</head>
+<body style="background-color:black">
+
+  {% load static %}
+  <table style="width:100%">
+    <td style="width:25%; vertical-align:top">
+      <p style="color:white">The correct answer is {{ answer }}.</p>
+      <br/>
+      <p style="color:white">You have {{ points }} points</p>
+      <form action="{% url 'songQuiz:continueGame' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Continue"></input>
+      </form>
+    </td>
+    <td>
+      <img src="{% static 'songQuiz/images/megumin.gif' %}" style="max-width:49%; height:auto; float:right"></img>
+    </td>
+</body>
+</html>

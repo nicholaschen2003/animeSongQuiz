@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Home</title>
+</head>
+<body style="background-color:black">
+
+  {% load static %}
+  <table>
+    <tr>
+      <td style="width:18.75%; text-align:center">
+        <p style="color:white">Art by:</p>
+        <p style="color:white">Eric Pan, Instagram:@ericpan_</p>
+        <p style="color:white">Nicholas Chen</p>
+        <p style="color:white">Ashwin Baluja, Instagram:@itsazb_</p>
+      </td>
+      <td style="width:62.5%; text-align:center">
+        <img src="{% static 'songQuiz/images/titletitle.gif' %}" style="width:95%; height:auto"></img>
+      </td>
+      <td style="width:18.75%; text-align:center">
+        <p style="color:white">Easiest songs by guess percentage:</p>
+        {% for song in songs %}
+        <p style="color:white">{{ song }}</p>
+        {% endfor %}
+      </td>
+    </tr>
+  </table>
+  <table style="width:62.5%; text-align:center; margin-left:18.75%">
+    <tr>
+      <td style="width:50%; text-align:center">
+        <a href="{% url 'songQuiz:help' %}"><img src="{% static 'songQuiz/images/watashikininarimasu.gif' %}" style="width:90%; height:auto; display:inline"></img></a>
+      </td>
+      <td style="width:50%; text-align:center">
+        <a href="{% url 'songQuiz:getNumUsers' %}"><img src="{% static 'songQuiz/images/linkstart.gif' %}" style="width:90%; height:auto; display:inline"></img></a>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start</title>
+</head>
+<body style="background-color:black">
+
+  {% load static %}
+  <table>
+    <td style="width:25%; vertical-align:top">
+      <form action="{% url 'songQuiz:createPlayers' numRounds %}" method="post">
+        {% csrf_token %}
+        {% with ''|center:numPlayers as range %}
+        {% for _ in range %}
+          <label for="{{ forloop.counter }}" style="color:white">Player {{ forloop.counter }} name:</label>
+          <br>
+          <input type="text" id="{{ forloop.counter }}" name="{{ forloop.counter }}">
+          <br>
+        {% endfor %}
+        {% endwith %}
+        <input type="submit" value="Next">
+      </form>
+    </td>
+    <td>
+      <img src="{% static 'songQuiz/images/nezuko.gif' %}" style="max-width:90%; height:auto"></img>
+    </td>
+    <td>
+      <img src="{% static 'songQuiz/images/kyubey.gif' %}" style="max-width:90%; height:auto"></img>
+    </td>
+
+</body>
+</html>

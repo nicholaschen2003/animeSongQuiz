@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Help</title>
+</head>
+<body style="background-color:black">
+
+  {% load static %}
+  <div class="container" style="text-align:right">
+    <a href="{% url 'songQuiz:home' %}"><img src="{% static 'songQuiz/images/return.gif' %}"></img></a>
+  </div>
+  <div class="container" style="text-align:center; color:white">
+    <p>Hi! Welcome to Anime Song Quiz!</p>
+    <p>This is a multiplayer game in which the players try to guess an anime based on a ten second clip of its theme song.</p>
+    <p>Game modes include Easy, Medium, Hard, Impossible, All Difficulties, and Increasing Difficulty. Harder songs are worth more points.</p>
+  </div>
+
+</body>
+</html>
